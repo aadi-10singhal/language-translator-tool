@@ -1,0 +1,203 @@
+my code is not showing in this r<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Language Translation Tool</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: #fff;
+      width: 500px;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    textarea {
+      width: 100%;
+      height: 120px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      resize: none;
+      margin-bottom: 15px;
+      font-size: 15px;
+    }
+
+    .languages {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    select {
+      width: 50%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      color: white;
+      font-size: 16px;
+    }
+
+    .translate-btn {
+      background: #007bff;
+    }
+
+    .translate-btn:hover {
+      background: #0056b3;
+    }
+
+    .copy-btn {
+      background: #28a745;
+    }
+
+    .copy-btn:hover {
+      background: #1e7e34;
+    }
+
+    .speak-btn {
+      background: #ff9800;
+    }
+
+    .speak-btn:hover {
+      background: #e68900;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <h2>🌐 Language Translation Tool</h2>
+
+  <textarea id="inputText" placeholder="Enter text here..."></textarea>
+
+  <div class="languages">
+    <select id="sourceLang">
+      <option value="en">English</option>
+      <option value="hi">Hindi</option>
+      <option value="fr">French</option>
+      <option value="es">Spanish</option>
+      <option value="de">German</option>
+      <option value="it">Italian</option>
+      <option value="ja">Japanese</option>
+      <option value="ko">Korean</option>
+    </select>
+
+    <select id="targetLang">
+      <option value="hi">Hindi</option>
+      <option value="en">English</option>
+      <option value="fr">French</option>
+      <option value="es">Spanish</option>
+      <option value="de">German</option>
+      <option value="it">Italian</option>
+      <option value="ja">Japanese</option>
+      <option value="ko">Korean</option>
+    </select>
+  </div>
+
+  <button class="translate-btn" onclick="translateText()">Translate</button>
+
+  <textarea id="outputText" placeholder="Translated text..." readonly></textarea>
+
+  <button class="copy-btn" onclick="copyText()">📋 Copy Translation</button>
+
+  <button class="speak-btn" onclick="speakText()">🔊 Speak Translation</button>
+
+</div>
+
+<script>
+
+async function translateText() {
+
+  const text = document.getElementById("inputText").value.trim();
+  const source = document.getElementById("sourceLang").value;
+  const target = document.getElementById("targetLang").value;
+
+  if(text === "") {
+    alert("Please enter some text.");
+    return;
+  }
+
+  const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${source}|${target}`;
+
+  try {
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    document.getElementById("outputText").value =
+      data.responseData.translatedText;
+
+  } catch(error) {
+
+    alert("Translation failed. Please try again.");
+
+  }
+
+}
+
+function copyText() {
+
+  const output = document.getElementById("outputText");
+
+  navigator.clipboard.writeText(output.value);
+
+  alert("Translation copied!");
+
+}
+
+function speakText() {
+
+  const text = document.getElementById("outputText").value;
+
+  if(text === "") {
+    alert("Nothing to speak.");
+    return;
+  }
+
+  const speech = new SpeechSynthesisUtterance(text);
+
+  speech.lang = document.getElementById("targetLang").value;
+
+  window.speechSynthesis.speak(speech);
+
+}
+
+</script>
+
+</body>
+</html> epo what to do now
